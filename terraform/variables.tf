@@ -1,6 +1,7 @@
 variable "project" {
   type        = string
   description = "Project tag for every resource"
+  nullable = false
 }
 
 variable "aws_region" {
@@ -96,8 +97,7 @@ variable "backend_count" {
   default     = 2
 
   validation {
-    # Just in case ...
-    condition     = var.backend_count >= 1
+    condition     = var.backend_count >= 1 && var.backend_count <= 4
     error_message = "backend_count must be between 1 and 4."
   }
 }
