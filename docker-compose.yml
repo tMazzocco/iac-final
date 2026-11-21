@@ -13,11 +13,10 @@ services:
       - type: bind
         source: .
         target: /work
-      # AWS credentials, read-only
+      # AWS credentials
       - type: bind
         source: ~/.aws
         target: /home/iac/.aws
-        read_only: true
       # ONE dedicated SSH key, read-only (never the whole ~/.ssh)
       - type: bind
         source: ${IAC_SSH_KEY:-~/.ssh/iac_ed25519}
