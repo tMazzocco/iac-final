@@ -75,6 +75,9 @@ DescribeVolumes
 DescribeNetworkInterfaces
 DescribeImages
 DescribeAvailabilityZones
+DescribeNatGateways
+CreateNatGateway
+DeleteNatGateway
 ```
 
 ### Block 2 — service **Elastic Load Balancing V2**
