@@ -1,0 +1,21 @@
+# ---------- Terraform ----------
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Real variable values: holds a personal public IP. Commit the .example instead.
+terraform.tfvars
+*.auto.tfvars
+*.tfvars.json
+
+override.tf
+override.tf.json
+*_override.tf
+
+# The lock file SHOULD be committed, for reproducible plans
+!.terraform.lock.hcl
+
+# ---------- Local ----------
+.env
