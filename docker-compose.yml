@@ -1,0 +1,30 @@
+services:
+  iac:
+    build: .
+    image: iac-tools
+    working_dir: /work
+    # Keep the container alive in the background; use `docker compose exec`
+    command: ["sleep", "infinity"]
+    init: true
+    environment:
+      AWS_PROFILE: ${AWS_PROFILE:-default}
+    volumes:
+      # Project files
+      - type: bind
+        source: .
+        target: /work
+      # AWS credentials, read-only
+      - type: bind
+        source: ~/.aws
+        target: /home/iac/.aws
+        read_only: true
+      # ONE dedicated SSH key, read-only (never the whole ~/.ssh)
+      - type: bind
+        source: ${IAC_SSH_KEY:-~/.ssh/iac_ed25519}
+        target: /home/iac/.ssh/id_iac
+        read_only: true
+    # Least privilege
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

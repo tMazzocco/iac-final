@@ -1,0 +1,9 @@
+.git
+**/.terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+.aws
+.ssh
+*.pem
+*.key
