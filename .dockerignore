@@ -7,3 +7,9 @@
 .ssh
 *.pem
 *.key
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl

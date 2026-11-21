@@ -22,6 +22,10 @@ services:
         source: ${IAC_SSH_KEY:-~/.ssh/iac_ed25519}
         target: /home/iac/.ssh/id_iac
         read_only: true
+      - type: bind
+        source: ${IAC_SSH_KEY:-~/.ssh/iac_ed25519}.pub
+        target: /home/iac/.ssh/id_iac.pub
+        read_only: true
     # Least privilege
     cap_drop:
       - ALL
