@@ -124,3 +124,25 @@ variable "admin_cidr" {
     error_message = "admin_cidr must be a valid CIDR and must not be 0.0.0.0/0."
   }
 }
+
+variable "enable_https" {
+  type        = bool
+  description = "Add the 443 listener and the ACM certificate; 80 then redirects"
+  default     = false
+
+  validation {
+    condition     = var.enable_https == false || var.domain_name != ""
+    error_message = "enable_https requires domain_name to be set."
+  }
+}
+
+variable "domain_name" {
+  type        = string
+  description = "Domain served by the ALB, empty while HTTPS is off"
+  default     = ""
+
+  validation {
+    condition     = var.domain_name == "" || can(regex("^[a-z0-9-]+([.][a-z0-9-]+)+$", var.domain_name))
+    error_message = "domain_name must be empty or a valid lowercase DNS name."
+  }
+}
