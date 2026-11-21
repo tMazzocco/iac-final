@@ -1,0 +1,47 @@
+# Copy to terraform.tfvars and fill in the values marked CHANGE ME.
+#   cp terraform.tfvars.example terraform.tfvars
+
+# ---------- Identity ----------
+# Name prefix + Project tag on every resource. Keep it unique in a shared account.
+project    = "esgi-iac-final"
+aws_region = "us-east-1"
+
+# ---------- Network ----------
+# Avoid 172.17.0.0/16: that is Docker's default bridge and would break SSH
+# from inside the tools container.
+vpc_cidr = "10.0.0.0/16"
+
+# Two AZs minimum: an ALB refuses to launch with subnets in fewer than two.
+azs = ["us-east-1a", "us-east-1b"]
+
+# One entry per AZ, same length as azs.
+# Public  = ALB + bastion + NAT gateway  (route 0.0.0.0/0 -> internet gateway)
+# Private = frontend + backend VMs       (route 0.0.0.0/0 -> NAT gateway)
+public_subnet_cidrs  = ["10.0.0.0/24", "10.0.1.0/24"]
+private_subnet_cidrs = ["10.0.10.0/24", "10.0.11.0/24"]
+
+# ---------- Compute ----------
+# Allowed: t3.nano | t3.micro | t3.small. nano has 0.5 GiB, enough for nginx,
+# not enough for a Docker build or anything JVM.
+instance_type = "t3.micro"
+
+# Empty = look up the latest Amazon Linux 2023 AMI.
+# Pin it after the first apply so later plans stay stable:
+#   ami_id = "ami-0123456789abcdef0"
+ami_id = ""
+
+frontend_count = 2
+backend_count  = 2
+
+# ---------- SSH ----------
+# Name of the key pair object in AWS (a label, not the key).
+key_name = "iac-final"
+
+# Public key, as seen from inside the container. Mounted read-only by
+# docker-compose.yml, so this default is usually correct.
+ssh_public_key_path = "/home/iac/.ssh/id_iac.pub"
+
+# CHANGE ME - the only source allowed to SSH the bastion.
+# Get yours from inside the container:  curl -s https://checkip.amazonaws.com
+# Use /32. Never 0.0.0.0/0: scanners find an exposed bastion within minutes.
+admin_cidr = "203.0.113.4/32"
