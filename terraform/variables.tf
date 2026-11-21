@@ -1,7 +1,7 @@
 variable "project" {
   type        = string
   description = "Project tag for every resource"
-  nullable = false
+  nullable    = false
 }
 
 variable "aws_region" {
